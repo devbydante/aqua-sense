@@ -160,7 +160,7 @@ Incluye:
 - Actividad reciente.
 - Estado general del sistema.
 
-![Dashboard](docs/dashboard.png)
+![Dashboard](docs/dashboard-v2.png)
 
 ---
 
