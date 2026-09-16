@@ -1,475 +1,347 @@
-💧 Aqua Sense
+# 💧 Aqua Sense
 
-Sistema IoT + IA para lectura y monitoreo de medidores de agua
+### Sistema IoT + IA para lectura y monitoreo de medidores de agua
 
-Aqua Sense es un proyecto personal desarrollado end-to-end para
-automatizar la captura, procesamiento, almacenamiento y visualización de
-lecturas de medidores de agua.
+![Status](https://img.shields.io/badge/status-MVP%20funcional-success)
+![Angular](https://img.shields.io/badge/Angular-19-red?logo=angular)
+![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-database-blue?logo=postgresql)
+![ESP32-CAM](https://img.shields.io/badge/IoT-ESP32--CAM-orange)
 
-La solución integra un dispositivo ESP32-CAM, una API desarrollada con
-Node.js + Express, procesamiento de imágenes mediante IA/OCR, una base
-de datos PostgreSQL y una aplicación web desarrollada con Angular.
+Aqua Sense es un proyecto personal **end-to-end** que integra IoT, backend, inteligencia artificial y desarrollo web para automatizar la captura, interpretación, almacenamiento y visualización de lecturas de medidores de agua.
 
-  Código fuente privado: los repositorios que contienen la
-  implementación real del backend, frontend y dispositivo IoT se
-  mantienen privados. Este repositorio funciona como documentación y
-  demostración pública del proyecto.
+> 🔒 **Código fuente privado:** este repositorio es la presentación pública del proyecto. El backend, frontend y firmware del dispositivo se mantienen en repositorios privados.
 
-📸 Vista general
+---
 
-[Dashboard de Aqua Sense]
+## 📸 Vista general
 
-Aqua Sense centraliza la información obtenida desde los dispositivos IoT
-y permite visualizar lecturas, consumo, estado de dispositivos,
-historial y alertas desde una interfaz web.
+![Dashboard de Aqua Sense](docs/dashboard.png)
 
-🎯 Objetivo
+El sistema permite monitorear dispositivos, procesar lecturas, analizar consumo y consultar el historial desde una aplicación web.
 
-El objetivo de Aqua Sense es automatizar el proceso de lectura y
-monitoreo de medidores de agua mediante la integración de:
+---
 
--   Dispositivos IoT.
--   Captura de imágenes.
--   Procesamiento mediante IA/OCR.
--   APIs REST.
--   Persistencia de datos.
--   Análisis de consumo.
--   Dashboard web.
+## 🎯 Objetivo
 
-El sistema busca reducir la dependencia de la lectura manual y
-centralizar la información generada por los medidores.
+Automatizar la lectura y monitoreo de medidores mediante:
 
-🚀 Cómo funciona
+- 📷 Captura de imágenes con ESP32-CAM.
+- 📡 Comunicación entre dispositivos IoT y backend.
+- 🤖 Interpretación de imágenes mediante IA/OCR.
+- 🔎 Validación de las lecturas obtenidas.
+- 🗄️ Almacenamiento de información en PostgreSQL.
+- 📊 Análisis histórico del consumo.
+- 🚨 Gestión de alertas.
+- 🖥️ Dashboard web para monitoreo.
 
-El flujo principal del sistema es:
+---
 
-ESP32-CAM | | Imagen + datos del dispositivo v Node.js + Express | +–
-Gestión de dispositivos +– Recepción de lecturas +– Procesamiento +–
-Alertas | v IA / OCR | +– Groq +– Gemini | v Procesamiento y validación
-| +– Confianza +– Consistencia +– Consumo +– Detección de errores | v
-PostgreSQL | v Angular | +– Dashboard +– Lecturas +– Historial +–
-Alertas +– Liquidación +– Configuración
+## 🏗️ Arquitectura
 
-🏗️ Arquitectura
+Aqua Sense está organizado en cinco componentes principales:
 
-La arquitectura general de Aqua Sense está compuesta por cinco
-componentes principales:
+1. **ESP32-CAM** — captura imágenes del medidor.
+2. **Node.js + Express** — API REST y lógica del sistema.
+3. **IA/OCR** — interpretación de las capturas.
+4. **PostgreSQL** — persistencia de dispositivos, lecturas y datos asociados.
+5. **Angular** — interfaz web de monitoreo y gestión.
 
-1.  Dispositivo IoT: ESP32-CAM para la captura de imágenes del medidor.
-2.  Backend: API REST desarrollada con Node.js y Express para gestionar
-    dispositivos, lecturas y procesamiento.
-3.  IA/OCR: procesamiento e interpretación de las imágenes para obtener
-    las lecturas del medidor.
-4.  Base de datos: PostgreSQL para la persistencia de dispositivos,
-    lecturas, alertas y configuración.
-5.  Frontend: aplicación web desarrollada con Angular para visualizar y
-    gestionar la información.
+![Arquitectura de Aqua Sense](docs/architecture.png)
 
-[Arquitectura de Aqua Sense]
+---
 
-🔄 Flujo de una lectura
+## 🔄 Flujo de una lectura
 
-Una lectura puede seguir las siguientes etapas:
+```text
+📷 ESP32-CAM
+     │
+     │ Imagen + datos del dispositivo
+     ▼
+⚙️ Node.js + Express
+     │
+     ▼
+🤖 IA / OCR
+     │
+     ▼
+🔎 Validación
+     │
+     ▼
+🗄️ PostgreSQL
+     │
+     ▼
+🅰️ Angular
+```
 
-1. Captura
+### Proceso
 
-El ESP32-CAM obtiene una imagen del medidor.
+1. El ESP32-CAM captura una imagen del medidor.
+2. El dispositivo envía la captura al backend.
+3. Node.js + Express recibe y registra la información.
+4. La imagen es procesada mediante IA/OCR.
+5. El resultado es validado antes de registrarse.
+6. La lectura se almacena en PostgreSQL.
+7. Angular consume la API y presenta la información.
 
-2. Comunicación
+---
 
-El dispositivo envía la captura al backend junto con información
-asociada al dispositivo.
+## 🤖 IA / OCR
 
-Entre los datos enviados se encuentran:
+Aqua Sense utiliza procesamiento multimodal para interpretar imágenes de medidores.
 
--   Imagen JPEG.
--   Identificador del dispositivo.
--   Token de autenticación.
--   Timestamp.
--   Información de conectividad.
+### Proveedores integrados
 
-3. Recepción
+- **Groq**
+- **Gemini**
 
-El backend desarrollado con Node.js + Express recibe y registra la
-información.
+El procesamiento se realiza desde el backend y las credenciales se gestionan mediante variables de entorno.
 
-4. Procesamiento
+La lectura obtenida pasa por una etapa de validación antes de considerarse válida.
 
-La imagen es procesada mediante servicios de IA/OCR para interpretar los
-dígitos del medidor.
+---
 
-5. Validación
+## 🔎 Validación de lecturas
 
-El resultado obtenido es analizado para determinar si la lectura
-presenta inconsistencias.
+El sistema incorpora lógica para detectar posibles inconsistencias en los resultados obtenidos mediante IA/OCR.
 
-6. Persistencia
+Entre los controles implementados se encuentran:
 
-La lectura procesada se almacena en PostgreSQL.
+- Nivel de confianza.
+- Comparación con lecturas anteriores.
+- Detección de saltos anómalos.
+- Detección de retrocesos.
+- Variaciones de consumo.
+- Confirmación de lecturas.
+- Revisión o corrección manual.
 
-7. Visualización
+```text
+Imagen
+  ↓
+IA / OCR
+  ↓
+Lectura detectada
+  ↓
+Validación
+  ↓
+Lectura registrada
+```
 
-Angular consume la API y presenta la información mediante dashboards,
-tablas, gráficos e historial.
+---
 
-🤖 Inteligencia artificial
+## 📷 ESP32-CAM
 
-Uno de los componentes principales de Aqua Sense es la interpretación
-automática de imágenes de medidores.
+El ESP32-CAM funciona como dispositivo de captura.
 
-El proyecto integra modelos capaces de analizar imágenes y extraer la
-lectura correspondiente.
+Una captura puede estar asociada con:
 
-Durante el desarrollo se evaluaron diferentes enfoques de procesamiento
-de imágenes y OCR.
+- Imagen JPEG.
+- Device ID.
+- Device Token.
+- Timestamp.
+- RSSI.
+- Metadatos del dispositivo.
 
-Proveedores utilizados
+El backend identifica y valida los dispositivos autorizados antes de procesar sus datos.
 
--   Groq
--   Gemini
+---
 
-La arquitectura permite utilizar diferentes proveedores de IA
-dependiendo de la configuración del sistema.
+## 🖥️ Dashboard
 
-🔎 Procesamiento y validación OCR
+El dashboard presenta una vista general del estado operativo del sistema.
 
-La lectura obtenida mediante IA/OCR pasa por una etapa adicional de
-procesamiento antes de considerarse válida.
+Incluye:
 
-Entre las validaciones implementadas se encuentran:
+- Medidores registrados.
+- Lecturas recibidas.
+- Procesamiento IA.
+- Consumo.
+- Tendencias.
+- Estado de dispositivos.
+- Actividad reciente.
+- Estado general del sistema.
 
--   Nivel de confianza.
--   Consistencia de la lectura.
--   Detección de saltos anómalos.
--   Detección de retrocesos.
--   Comparación con lecturas anteriores.
--   Cálculo de consumo.
--   Confirmación de lecturas.
--   Revisión o corrección manual cuando corresponde.
+![Dashboard](docs/dashboard.png)
 
-Esto permite separar el proceso de:
+---
 
-Imagen | v IA / OCR | v Lectura detectada | v Validación | v Lectura
-registrada
+## 📖 Lectura del medidor
 
-📷 Dispositivo IoT
+La sección de lecturas permite consultar la captura procesada y el resultado obtenido.
 
-Aqua Sense utiliza ESP32-CAM como dispositivo de captura.
+Incluye:
 
-El dispositivo permite obtener imágenes del medidor y comunicarse con el
-backend mediante la red.
+- Imagen del medidor.
+- Lectura actual.
+- Consumo respecto a la lectura anterior.
+- Confianza de IA.
+- Fecha y hora.
+- Estado de procesamiento.
+- Origen de la lectura.
+- Evolución histórica.
 
-Información asociada a la captura
+![Lectura del medidor](docs/reading.png)
 
--   Imagen.
--   Device ID.
--   Device Token.
--   Timestamp.
--   RSSI.
--   Metadatos.
+---
 
-El backend identifica los dispositivos mediante sus credenciales
-configuradas y controla qué dispositivos pueden enviar información.
+## 📊 Historial y análisis
 
-🖥️ Dashboard
+El sistema mantiene un historial de lecturas para analizar el consumo.
 
-El dashboard proporciona una vista general del estado operativo del
-sistema.
+Incluye:
 
-Permite consultar información relacionada con:
+- Filtros por medidor.
+- Filtros por fecha.
+- Promedio diario.
+- Mínimo y máximo.
+- Consumo total.
+- Gráficos.
+- Tabla detallada.
+- Nivel de confianza.
+- Origen de la lectura.
+- Exportación CSV.
 
--   Medidores registrados.
--   Lecturas recibidas.
--   Procesamiento de IA.
--   Consumo.
--   Tendencias.
--   Estado de dispositivos.
--   Actividad reciente.
--   Estado general del sistema.
+![Historial de lecturas](docs/history.png)
 
-[Dashboard de Aqua Sense]
+---
 
-📖 Lectura del medidor
+## ✨ Funcionalidades principales
 
-La sección de lectura permite visualizar la captura más reciente y el
-resultado obtenido.
+| Funcionalidad | Descripción |
+|---|---|
+| 📷 Captura automática | Captura de imágenes mediante ESP32-CAM |
+| 🤖 IA / OCR | Interpretación automática de imágenes |
+| 🔎 Validación | Control de consistencia de lecturas |
+| 📡 Dispositivos | Gestión de dispositivos IoT |
+| 📊 Dashboard | Resumen operativo del sistema |
+| 💧 Consumo | Cálculo y análisis del consumo |
+| 📖 Lecturas | Consulta de lecturas |
+| 📚 Historial | Consulta de registros históricos |
+| 🚨 Alertas | Gestión de eventos |
+| 📄 Exportación | Exportación de información a CSV |
+| ⚙️ Configuración | Gestión de parámetros del sistema |
 
-La interfaz muestra información como:
+---
 
--   Imagen del medidor.
--   Lectura actual.
--   Consumo respecto a la lectura anterior.
--   Confianza de IA.
--   Fecha de lectura.
--   Estado de procesamiento.
--   Origen de la lectura.
--   Evolución histórica.
+## 🛠️ Stack tecnológico
 
-[Lectura del medidor]
+### Backend
 
-📊 Historial y análisis
+- Node.js
+- Express
+- JavaScript
+- REST API
+- PostgreSQL
+- Autenticación y autorización
 
-Aqua Sense mantiene un historial de las lecturas procesadas.
+### Frontend
 
-La interfaz permite consultar y analizar la información mediante
-diferentes filtros.
+- Angular 19
+- TypeScript
+- HTML5
+- CSS3
 
-Funcionalidades
+### IA / Computer Vision
 
--   Filtro por medidor.
--   Filtro por fechas.
--   Periodos rápidos.
--   Promedio diario.
--   Consumo mínimo.
--   Consumo máximo.
--   Consumo total.
--   Gráficos.
--   Tabla detallada.
--   Nivel de confianza.
--   Origen de la lectura.
--   Exportación CSV.
+- Gemini API
+- Groq
+- OCR
+- Procesamiento multimodal de imágenes
 
-[Historial de lecturas]
+### IoT
 
-🚨 Alertas
+- ESP32-CAM
+- HTTP
+- Captura de imágenes
+- Device ID / Device Token
 
-El sistema incorpora funcionalidades para gestionar eventos relacionados
-con las lecturas y el estado de los dispositivos.
+### Herramientas
 
-Las alertas permiten identificar situaciones que requieren revisión o
-atención.
+- Git
+- GitHub
+- Linux
+- Azure
+- Variables de entorno
 
-📡 Gestión de dispositivos
+---
 
-Aqua Sense permite trabajar con diferentes dispositivos IoT.
+## 🔐 Seguridad
 
-Cada dispositivo puede contar con información como:
+Las credenciales sensibles se gestionan mediante variables de entorno.
 
--   Identificador.
--   Nombre.
--   Estado.
--   Último contacto.
--   RSSI.
--   Última lectura.
--   Estado del procesamiento.
+El repositorio público no contiene:
 
-Esto permite centralizar el monitoreo de los dispositivos conectados.
+- API Keys reales.
+- Contraseñas.
+- Tokens reales.
+- Credenciales de base de datos.
+- Secretos JWT.
+- Datos privados.
+- Configuración sensible de producción.
 
-💧 Monitoreo del consumo
+El código fuente completo permanece en repositorios privados.
 
-A partir de las lecturas almacenadas, el sistema puede calcular
-variaciones de consumo entre registros.
+---
 
-La plataforma permite visualizar:
+## 🧩 Retos técnicos
 
-Lectura anterior | v Lectura actual | v Diferencia | v Consumo
+El desarrollo de Aqua Sense implicó integrar hardware, backend, IA, base de datos y frontend.
 
-⚙️ Funcionalidades principales
+Principales retos:
 
-  Funcionalidad           Descripción
-  ----------------------- ----------------------------------------
-  📷 Captura automática   Captura de imágenes mediante ESP32-CAM
-  🤖 IA / OCR             Interpretación automática de imágenes
-  🔎 Validación           Validación de lecturas obtenidas
-  📡 Dispositivos         Gestión de dispositivos IoT
-  📊 Dashboard            Resumen operativo del sistema
-  💧 Consumo              Cálculo y análisis del consumo
-  📖 Lecturas             Consulta de lecturas individuales
-  📚 Historial            Historial de lecturas
-  🚨 Alertas              Gestión de alertas
-  📄 Exportación          Exportación de información a CSV
-  ⚙️ Configuración        Administración de parámetros
+- Comunicación entre ESP32-CAM y backend.
+- Recepción y almacenamiento de imágenes.
+- Integración con servicios de IA.
+- Interpretación de lecturas mediante OCR.
+- Validación de resultados.
+- Cálculo de consumo.
+- Persistencia en PostgreSQL.
+- Gestión de múltiples dispositivos.
+- Desarrollo de API REST.
+- Integración Angular + backend.
+- Visualización de información histórica.
 
-🛠️ Stack tecnológico
+---
 
-Backend
+## 🌐 Demo
 
--   Node.js
--   Express
--   JavaScript
--   REST API
--   PostgreSQL
--   APIs externas
--   Procesamiento de imágenes
--   Autenticación y autorización
+👉 **[Aqua Sense](https://aquasense.alkirax.com/)**
 
-Frontend
+Aplicación web para visualizar el sistema y su flujo general de monitoreo.
 
--   Angular
--   TypeScript
--   HTML5
--   CSS3
+---
 
-Inteligencia artificial
+## 🔒 Código fuente
 
--   Gemini API
--   Groq
--   OCR
--   Computer Vision
--   Procesamiento multimodal de imágenes
+La implementación completa se mantiene privada.
 
-IoT
+Componentes principales:
 
--   ESP32-CAM
--   HTTP
--   Captura de imágenes
--   Identificación de dispositivos
--   Autenticación mediante Device ID y Token
+- `aqua-sense-backend`
+- `aqua-sense-frontend`
+- Firmware / integración ESP32-CAM
 
-Base de datos
+Este repositorio público contiene documentación, arquitectura, capturas y material demostrativo.
 
--   PostgreSQL
--   Modelado relacional
--   Consultas SQL
--   Persistencia de lecturas
+---
 
-Infraestructura y herramientas
+## 📌 Estado del proyecto
 
--   Linux
--   Azure
--   Git
--   GitHub
--   Variables de entorno
--   APIs REST
+**MVP funcional — en desarrollo continuo.**
 
-🔐 Seguridad
+El proyecto continúa evolucionando en procesamiento de imágenes, reconocimiento de lecturas, validación, monitoreo y experiencia de usuario.
 
-Las credenciales sensibles del sistema se gestionan mediante variables
-de entorno.
+---
 
-El proyecto utiliza mecanismos de autenticación para controlar el acceso
-de dispositivos y usuarios.
+## 👨‍💻 Autor
 
-El repositorio público de documentación no contiene credenciales reales.
+### Dante Quispe
 
-No se publican:
+**Software Developer | Backend / Full Stack**
 
--   API Keys.
--   Contraseñas.
--   Tokens reales.
--   Credenciales de PostgreSQL.
--   Secretos de autenticación.
--   Información privada de usuarios o dispositivos.
--   Configuración sensible de producción.
+`Node.js` · `Angular` · `PostgreSQL` · `C#/.NET` · `REST API` · `Python` · `Azure` · `IoT` · `IA`
 
-🧩 Retos técnicos
+[GitHub](https://github.com/devbydante)
 
-El desarrollo de Aqua Sense implicó resolver diferentes problemas
-relacionados con la integración entre hardware, backend, IA, base de
-datos y frontend.
+---
 
-Integración IoT
-
-Comunicación entre ESP32-CAM y backend para recibir capturas e
-información del dispositivo.
-
-Procesamiento de imágenes
-
-Obtención de información útil a partir de fotografías del medidor.
-
-OCR mediante IA
-
-Integración de servicios de inteligencia artificial capaces de
-interpretar imágenes y obtener lecturas.
-
-Validación de lecturas
-
-Implementación de reglas para detectar resultados inconsistentes y
-evitar registrar lecturas incorrectas sin revisión.
-
-Backend
-
-Diseño de una API REST para centralizar dispositivos, lecturas, alertas,
-configuración y demás operaciones.
-
-Base de datos
-
-Persistencia y consulta de lecturas históricas y datos relacionados con
-los dispositivos.
-
-Frontend
-
-Construcción de una interfaz web para visualizar información operativa y
-analizar el comportamiento del consumo.
-
-📐 Diseño de la solución
-
-El proyecto separa las principales responsabilidades:
-
-IoT | v Comunicación | v API Backend | +– Dispositivos +– Lecturas +–
-Alertas +– Dashboard +– Configuración | v Procesamiento IA/OCR | v
-Validación | v PostgreSQL | v Angular
-
-Esta separación permite mantener independientes el dispositivo, el
-procesamiento, la persistencia y la interfaz de usuario.
-
-🌐 Demo
-
-Aplicación web
-
-Aqua Sense
-
-https://aquasense.alkirax.com/
-
-La aplicación permite visualizar la interfaz del sistema y conocer el
-flujo general de monitoreo y lectura.
-
-🎥 Demostración
-
-Próximamente se añadirá un vídeo demostrativo mostrando el flujo
-completo:
-
-ESP32-CAM | v Captura del medidor | v Envío al backend | v Procesamiento
-IA/OCR | v Validación | v PostgreSQL | v Dashboard Angular
-
-🔒 Código fuente
-
-El código fuente completo de Aqua Sense se mantiene privado.
-
-Esto incluye:
-
--   Backend.
--   Frontend.
--   Firmware del ESP32-CAM.
--   Lógica de procesamiento.
--   Integraciones internas.
--   Configuración de producción.
-
-Los componentes principales se mantienen en repositorios privados:
-
--   aqua-sense-backend
--   aqua-sense-frontend
-
-Este repositorio público funciona como portafolio técnico y
-documentación del proyecto.
-
-📌 Estado del proyecto
-
-MVP funcional — en desarrollo continuo.
-
-Aqua Sense continúa evolucionando con mejoras relacionadas con:
-
--   Procesamiento de imágenes.
--   Reconocimiento de lecturas.
--   Validación de resultados.
--   Monitoreo de dispositivos.
--   Análisis de consumo.
--   Experiencia de usuario.
-
-👨‍💻 Autor
-
-Dante Quispe
-
-Software Developer | Backend / Full Stack
-
-Tecnologías principales:
-
-Node.js · Angular · PostgreSQL · C#/.NET · REST API · Python · Azure ·
-IoT · IA
-
-GitHub:
-
-https://github.com/devbydante
-
-💧 Aqua Sense
-
+> 💧 **Aqua Sense -**
