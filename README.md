@@ -16,7 +16,7 @@ Aqua Sense es un proyecto personal **end-to-end** que integra IoT, backend, inte
 
 ## 📸 Vista general
 
-![Dashboard de Aqua Sense](docs/dashboard.png)
+![Dashboard de Aqua Sense](docs/dashboard-v2.png)
 
 El sistema permite monitorear dispositivos, procesar lecturas, analizar consumo y consultar el historial desde una aplicación web.
 
